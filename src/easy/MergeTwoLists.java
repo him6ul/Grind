@@ -12,6 +12,9 @@ public class MergeTwoLists {
 				resultNode.next = compareNode;
 			} else
 				resultNode.next = compareNode;
+			
+			list1 = list1.next;
+			list2 = list2.next;
 		} while (list1.next != null || list2.next != null);
 
 		if (list1.next == null) {
@@ -41,18 +44,35 @@ public class MergeTwoLists {
 
 	private static ListNode makeNode(int... intArray) {
 		ListNode resultNode = new ListNode();
-		for (int index = 0; index<intArray.length; index++) {
-			
+		if (intArray.length == 0)
+			return resultNode;
+
+		ListNode node = null;
+		for (int index = 0; index < intArray.length; index++) {
+			if (index == 0)
+				node = makeNode(intArray[index], resultNode);
+			else
+				node = makeNode(intArray[index], node);
 		}
 		return resultNode;
 	}
 
+	private static ListNode makeNode(int integer, ListNode node) {
+
+		ListNode tempNode = new ListNode();
+		tempNode.val = integer;
+		node.next = tempNode;
+		return tempNode;
+	}
+
 	private static String printNode(ListNode node) {
 		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(node.val);
+
 		while (node.next != null) {
-			stringBuilder.append(node.val);
-			stringBuilder.append(", ");
 			node = node.next;
+			stringBuilder.append(", ");
+			stringBuilder.append(node.val);
 		}
 		return stringBuilder.toString();
 	}
@@ -70,7 +90,7 @@ public class MergeTwoLists {
 		System.out.println("_________________ resultNode -> " + printNode(resultNode));
 	}
 
-	public class ListNode {
+	public static class ListNode {
 		int val;
 		ListNode next;
 
